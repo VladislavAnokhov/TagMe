@@ -1,0 +1,97 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+    <script>const userId = [[${#authentication.principal.id}]];</script>
+    <link href="/css/styles.css" rel="stylesheet">
+    <script src="/js/script.js" defer></script>
+</head>
+<body>
+<header>
+    <h1><a href="/" class="invisible-link">TAG ME</a></h1>
+</header>
+<div class="container">
+    <aside class="sidebar">
+        <nav>
+            <a th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}"
+               th:href="@{/admin}" class="button">Страница админа</a>
+            <div sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/{id}(id=${#authentication.principal.id})}" class="button">Моя страница</a>
+            </div>
+            <button id="randomSearch">Поиск рандом</button>
+            <button id="tagSearch">Поиск по тегам</button>
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
+                <button type="submit">Выход</button>
+            </form>
+        </nav>
+    </aside>
+    <main class="user-profile">
+        <section class="user-info">
+            <h2 th:text="${user.name}">Имя пользователя</h2>
+            <p>Возраст: <span th:text="${age}"></span> лет</p>
+        </section>
+
+        <section class="user-photos">
+            <h3>Фотографии</h3>
+            <div class="user-photo">
+                <div th:each="photo : ${user.photoList}" class="photo">
+                    <img th:src="|/${photo.fileLink}|" alt="Фото пользователя"/>
+                    <button th:if="${#authentication.principal.id == user.id || #authorization.expression('hasAuthority(''ROLE_ADMIN'')')}"
+                            th:attr="onclick='deletePhoto(' + ${photo.id} + ');'"
+                            class="delete-photo-btn">Удалить фотографию</button>
+                </div>
+            </div>
+        </section>
+        <div th:if="${user.description != null and !user.description.isEmpty()}">
+            <p><span th:text="'Обо мне: ' + ${user.description}"></span></p>
+        </div>
+        <section class="user-tags">
+            <h3>Теги</h3>
+            <ul>
+                <li th:each="tag : ${user.tagsList}">
+                    <span th:text="${tag.tag}">Тег</span>
+                    <button th:if="${#authentication.principal.id == user.id || #authorization.expression('hasAuthority(''ROLE_ADMIN'')')}"
+                            th:attr="onclick='deleteTag(' + ${tag.id} + ');'">&#10006;</button>
+
+                </li>
+            </ul>
+        </section>
+        <div sec:authorize="isAuthenticated()">
+            <a th:if="${#authentication.principal.id == user.id }"
+        >
+        <button id="addTagButton">Добавить тег</button>
+        <div id="addTagForm" style="display: none;">
+            <input type="text" id="newTag" placeholder="Новый тег"/>
+            <button onclick="saveTag()">Сохранить</button>
+
+        </div>
+        </div>
+
+        <section class="user-contacts">
+            <h3>Контакты</h3>
+            <ul>
+                <li th:each="contact : ${user.contactList}">
+                    <span th:text="${contact.code}">Тип контакта</span>:
+                    <span th:text="${contact.value}">Значение</span>
+                </li>
+            </ul>
+        </section>
+        <div sec:authorize="isAuthenticated()">
+            <a th:if="${#authentication.principal.id == user.id }"
+               th:href="@{/user/{id}/edit(id=${user.id})}" class="btn">Редактировать</a>
+        </div>
+        <br>
+        <div sec:authorize="isAuthenticated()">
+            <form th:action="@{/user/{id}/deleteUser(id=${user.id})}" method="post" th:if="${#authentication.principal.id == user.id || #authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit" class="btn">Удалить аккаунт</button>
+            </form>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

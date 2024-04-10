@@ -1,0 +1,75 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Random</title>
+    <link href="/css/styles.css" rel="stylesheet">
+    <script src="/js/script.js" defer></script>
+</head>
+<body>
+<header>
+    <h1><a href="/" class="invisible-link">TAG ME</a></h1>
+</header>
+<div class="container">
+    <aside class="sidebar">
+        <nav>
+            <a th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}"
+               th:href="@{/admin}" class="button">Страница админа</a>
+
+            <div sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/{id}(id=${#authentication.principal.id})}" class="button">Моя страница</a>
+            </div>
+            <button id="randomSearch">Поиск рандом</button>
+            <button id="tagSearch">Поиск по тегам</button>
+            <button id="login" sec:authorize="isAnonymous()">Вход</button>
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
+                <button type="submit">Выход</button>
+            </form>
+
+        </nav>
+    </aside>
+    <main class="user-content">
+        <div class="user-list">
+            <div th:each="user : ${users}" class="user-item">
+                <a th:href="@{/user/{id}(id=${user.id})}" class="user-link">
+                <div class="user">
+                    <div class="user-photo">
+                        <img th:if="${not #lists.isEmpty(user.photoList)}" th:src="|/uploads/${user.photoList[0].fileLink}|" alt="Фото пользователя"/>
+                    </div>
+                    <div class="user-info">
+                        <h3 th:text="${user.name}">Имя</h3>
+                        <p>Возраст: <span th:text="${userAges[user.id]}">Возраст</span> лет</p>
+                        <div th:if="${user.description != null and !user.description.isEmpty()}">
+                        <p><span th:text="'Обо мне: ' + ${user.description}"></span></p>
+                        </div>
+                            <h3>Теги</h3>
+                            <ul>
+                                <li th:each="tag : ${user.tagsList}" th:text="${tag.tag}">Тег</li>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+                  </a>
+            </div>
+            <div class="pagination">
+                <a th:each="pageNumber : ${page_numbers}"
+                   th:href="@{/find/random(page=${pageNumber}, limit=5)}"
+                   th:text="${pageNumber}"
+                   th:data-page="${pageNumber}"
+                   th:classappend="${pageNumber == current_page ? 'button-style active' : 'button-style'}">
+                </a>
+            </div>
+        </div>
+    </main>
+</div>
+<script>
+
+    document.getElementById('login').addEventListener('click', function () {
+        window.location.href = window.location.origin +'/login';
+    });
+
+</script>
+</body>
+</html>

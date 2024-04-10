@@ -1,0 +1,67 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Random</title>
+    <link href="/css/styles.css" rel="stylesheet">
+    <script src="/js/script.js" defer></script>
+</head>
+<body>
+<header>
+    <h1><a href="/" class="invisible-link">TAG ME</a></h1>
+</header>
+<div class="container">
+    <aside class="sidebar">
+        <nav>
+            <a th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}"
+               th:href="@{/admin}" class="button">Страница админа</a>
+
+            <div sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/{id}(id=${#authentication.principal.id})}" class="button">Моя страница</a>
+            </div>
+            <button id="randomSearch">Поиск рандом</button>
+            <button id="tagSearch">Поиск по тегам</button>
+            <button id="login" sec:authorize="isAnonymous()">Вход</button>
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
+                <button type="submit">Выход</button>
+            </form>
+
+        </nav>
+    </aside>
+    <main class="user-content">
+        <table>
+            <tr>
+                <th>Имя</th>
+                <th>Возраст</th>
+                <th>Действия</th>
+            </tr>
+            <br>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.name}"></td>
+                <td th:text="${userAges[user.id]}"></td>
+                <td>
+                    <div class="actions">
+                        <a th:href="@{/user/{id}(id=${user.id})}" class="btn">Перейти</a>
+                        <form th:action="@{/user/{id}/deleteUser(id=${user.id})}" method="post">
+                            <button type="submit" class="btn">Удалить</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="pagination">
+            <a th:each="pageNumber : ${page_numbers}"
+             th:href="@{/admin(page=${pageNumber},limit =10)}"
+               th:text="${pageNumber}"
+               th:classappend="${pageNumber == current_page ? 'button-style active' : 'button-style'}">
+            </a>
+        </div>
+    </main>
+</div>
+<script>
+
+</script>
+</body>
+</html>

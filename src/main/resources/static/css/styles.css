@@ -1,0 +1,256 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.invisible-link {
+    color: inherit; /* Цвет текста как у родительского элемента */
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    background-color: transparent; /* Фоновый цвет прозрачный */
+}
+
+.invisible-link:hover,
+.invisible-link:focus {
+    text-decoration: none; /* Убираем подчеркивание при наведении и фокусе */
+    cursor: pointer; /* Курсор в виде указателя, чтобы подчеркнуть, что это интерактивный элемент */
+}
+
+header {
+    background-color: #0056b3; /* Тёмно-синий фон для заголовка */
+    color: white;
+    padding: 1em;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-grow: 1;
+}
+
+
+
+.registration-form form {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.form-group label {
+    display: block;
+}
+
+.form-actions {
+    text-align: right;
+}
+.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+
+
+
+
+.sidebar {
+    background-color: #007bff; /* Яркий синий фон для боковой панели */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    width: 250px; /* фиксированная ширина для боковой панели */
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+nav button {
+    width: 100%;
+    margin-bottom: 1em;
+}
+.btn-bottom-margin {
+    margin-bottom: 10px;
+}
+#myPage {
+    background-color: #4CAF50; /* Зеленый */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+}
+
+#description {
+    border: 1px solid #ccc;
+    padding: 2em;
+    margin-top: 1em; /* Дополнительный отступ сверху */
+    width: 60%;
+    box-sizing: border-box; /* Учитываем padding и border в ширине элемента */
+}
+
+footer {
+    display: flex;
+    justify-content: space-around;
+    padding: 1em;
+    width: 100%;
+}
+
+button {
+    padding: 0.5em 1em;
+    cursor: pointer;
+    border: none;
+    background-color:  #0056b3; /* Синий фон для кнопок */
+    color: white;
+    border-radius: 4px;
+}
+.button-style {
+    display: inline-block;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background-color: #007bff;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+.active {
+    background-color: #0056b3;
+}
+/* Стили для адаптивности */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        order: -1; /* Поместить боковую панель над основным содержимым */
+    }
+
+    main {
+        align-items: stretch;
+    }
+
+    #description {
+        width: auto;
+        margin: 1em;
+        padding: 1em;
+    }
+
+    footer {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+.user {
+    display: flex;
+    margin-bottom: 20px;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 300px;
+}
+
+.user img {
+    width: 140px;  /* Ширина изображения */
+    height: 140px; /* Высота изображения */
+    object-fit: cover; /* Сохраняет пропорции изображения, обрезая его если нужно */
+    margin-right: 20px;
+}
+.user-photo img {
+    width: 140px; /* Или другая подходящая ширина */
+    height: auto; /* Для сохранения пропорций изображения */
+    display: block; /* Убедитесь, что изображение блочное */
+}
+
+.user-info {
+    margin-top: 10px;
+}
+.user-content {
+    display: flex;
+    flex-direction: column;
+}
+.user-item {
+    display: flex;
+    align-items: center; /* Выравнивание элементов по центру по вертикали */
+    margin-bottom: 20px; /* Отступ между элементами списка */
+}
+.user-list {
+    width: 80%; /* Или другой процент/значение в зависимости от желаемой ширины */
+    margin-left: 20%; /* Или другой отступ для сдвига влево */
+}
+
+
+
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+.actions {
+    display: flex;
+    gap: 10px; /* Добавляет промежуток между элементами */
+}
+
+.actions form {
+    margin: 0; /* Убирает стандартные отступы форм */
+}

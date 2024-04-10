@@ -1,0 +1,55 @@
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAG ME - Сайт знакомств</title>
+    <link href="/css/styles.css" rel="stylesheet">
+    <script src="/js/script.js" defer></script>
+</head>
+<body>
+<header>
+    <h1><a href="/" class="invisible-link">TAG ME</a></h1>
+</header>
+<div class="container">
+    <aside class="sidebar">
+        <nav>
+            <a th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}"
+               th:href="@{/admin}" class="button">Страница админа</a>
+            <div sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/{id}(id=${#authentication.principal.id})}" class="button">Моя страница</a>
+            </div>
+            <button id="randomSearch">Поиск рандом</button>
+            <button id="tagSearch">Поиск по тегам</button>
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
+                <button type="submit">Выход</button>
+            </form>
+        </nav>
+    </aside>
+    <main>
+        <div th:if="${showSuccessMessage}">
+        <p th:text="${successMessage}"></p>
+    </div>
+        <section id="description">
+            Добро пожаловать! это мини пет проект для знамоств пользоватейлей. На этом сайте вы можете найти человека по тегам и написать ему!
+
+            P.S. TAG ME - скрытая кнопка меню
+        </section>
+        <footer>
+            <button id="login" sec:authorize="isAnonymous()">Вход</button>
+            <button id="registration" sec:authorize="isAnonymous()">Регистрация</button>
+        </footer>
+    </main>
+</div>
+<script>
+    document.getElementById('registration').addEventListener('click', function () {
+        window.location.href = window.location.origin +'/menu/registration';
+    });
+    document.getElementById('login').addEventListener('click', function () {
+        window.location.href = window.location.origin +'/login';
+    });
+
+</script>
+</body>
+</html>
